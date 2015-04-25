@@ -111,16 +111,14 @@ void SimpleTimer::run() {
 
 // find the first available slot
 // return -1 if none found
-int SimpleTimer::findFirstFreeSlot() {
-    int i;
-
+int8_t SimpleTimer::findFirstFreeSlot() {
     // all slots are used
     if (numTimers >= MAX_TIMERS) {
         return -1;
     }
 
     // return the first slot with no callback (i.e. free)
-    for (i = 0; i < MAX_TIMERS; i++) {
+    for (uint8_t i = 0; i < MAX_TIMERS; i++) {
         if (callbacks[i] == 0) {
             return i;
         }
@@ -131,8 +129,8 @@ int SimpleTimer::findFirstFreeSlot() {
 }
 
 
-int SimpleTimer::setTimer(long d, timer_callback f, int n) {
-    int freeTimer;
+int8_t SimpleTimer::setTimer(uint32_t d, timer_callback f, uint8_t n) {
+    int8_t freeTimer;
 
     freeTimer = findFirstFreeSlot();
     if (freeTimer < 0) {
@@ -155,24 +153,24 @@ int SimpleTimer::setTimer(long d, timer_callback f, int n) {
 }
 
 
-int SimpleTimer::setInterval(long d, timer_callback f) {
+int8_t SimpleTimer::setInterval(uint32_t d, timer_callback f) {
     return setTimer(d, f, RUN_FOREVER);
 }
 
 
-int SimpleTimer::setTimeout(long d, timer_callback f) {
+int8_t SimpleTimer::setTimeout(uint32_t d, timer_callback f) {
     return setTimer(d, f, RUN_ONCE);
 }
 
 
-void SimpleTimer::deleteTimer(int timerId) {
+uint8_t SimpleTimer::deleteTimer(uint8_t timerId) {
     if (timerId >= MAX_TIMERS) {
-        return;
+        return MAX_TIMERS;
     }
 
     // nothing to delete if no timers are in use
     if (numTimers == 0) {
-        return;
+        return MAX_TIMERS;
     }
 
     // don't decrease the number of timers if the
@@ -187,11 +185,12 @@ void SimpleTimer::deleteTimer(int timerId) {
         // update number of timers
         numTimers--;
     }
+    return MAX_TIMERS;
 }
 
 
 // function contributed by code@rowansimms.com
-void SimpleTimer::restartTimer(int numTimer) {
+void SimpleTimer::restartTimer(uint8_t numTimer) {
     if (numTimer >= MAX_TIMERS) {
         return;
     }
@@ -200,7 +199,7 @@ void SimpleTimer::restartTimer(int numTimer) {
 }
 
 
-boolean SimpleTimer::isEnabled(int numTimer) {
+boolean SimpleTimer::isEnabled(uint8_t numTimer) {
     if (numTimer >= MAX_TIMERS) {
         return false;
     }
@@ -209,7 +208,7 @@ boolean SimpleTimer::isEnabled(int numTimer) {
 }
 
 
-void SimpleTimer::enable(int numTimer) {
+void SimpleTimer::enable(uint8_t numTimer) {
     if (numTimer >= MAX_TIMERS) {
         return;
     }
@@ -218,7 +217,7 @@ void SimpleTimer::enable(int numTimer) {
 }
 
 
-void SimpleTimer::disable(int numTimer) {
+void SimpleTimer::disable(uint8_t numTimer) {
     if (numTimer >= MAX_TIMERS) {
         return;
     }
@@ -227,7 +226,7 @@ void SimpleTimer::disable(int numTimer) {
 }
 
 
-void SimpleTimer::toggle(int numTimer) {
+void SimpleTimer::toggle(uint8_t numTimer) {
     if (numTimer >= MAX_TIMERS) {
         return;
     }
@@ -236,6 +235,6 @@ void SimpleTimer::toggle(int numTimer) {
 }
 
 
-int SimpleTimer::getNumTimers() {
+uint8_t SimpleTimer::getNumTimers() {
     return numTimers;
 }

@@ -40,11 +40,11 @@ class SimpleTimer {
 
 public:
     // maximum number of timers
-    const static int MAX_TIMERS = 10;
+    const static uint8_t MAX_TIMERS = 10;
 
     // setTimer() constants
-    const static int RUN_FOREVER = 0;
-    const static int RUN_ONCE = 1;
+    const static uint8_t RUN_FOREVER = 0;
+    const static uint8_t RUN_ONCE = 1;
 
     // constructor
     SimpleTimer();
@@ -53,72 +53,72 @@ public:
     void run();
 
     // call function f every d milliseconds
-    int setInterval(long d, timer_callback f);
+    int8_t setInterval(uint32_t d, timer_callback f);
 
     // call function f once after d milliseconds
-    int setTimeout(long d, timer_callback f);
+    int8_t setTimeout(uint32_t d, timer_callback f);
 
     // call function f every d milliseconds for n times
-    int setTimer(long d, timer_callback f, int n);
+    int8_t setTimer(uint32_t d, timer_callback f, uint8_t n);
 
     // destroy the specified timer
-    void deleteTimer(int numTimer);
+    uint8_t deleteTimer(uint8_t numTimer);
 
     // restart the specified timer
-    void restartTimer(int numTimer);
+    void restartTimer(uint8_t numTimer);
 
     // returns true if the specified timer is enabled
-    boolean isEnabled(int numTimer);
+    boolean isEnabled(uint8_t numTimer);
 
     // enables the specified timer
-    void enable(int numTimer);
+    void enable(uint8_t numTimer);
 
     // disables the specified timer
-    void disable(int numTimer);
+    void disable(uint8_t numTimer);
 
     // enables the specified timer if it's currently disabled,
     // and vice-versa
-    void toggle(int numTimer);
+    void toggle(uint8_t numTimer);
 
     // returns the number of used timers
-    int getNumTimers();
+    uint8_t getNumTimers();
 
     // returns the number of available timers
-    int getNumAvailableTimers() { return MAX_TIMERS - numTimers; };
+    uint8_t getNumAvailableTimers() { return MAX_TIMERS - numTimers; };
 
 private:
     // deferred call constants
-    const static int DEFCALL_DONTRUN = 0;       // don't call the callback function
-    const static int DEFCALL_RUNONLY = 1;       // call the callback function but don't delete the timer
-    const static int DEFCALL_RUNANDDEL = 2;      // call the callback function and delete the timer
+    const static uint8_t DEFCALL_DONTRUN = 0;       // don't call the callback function
+    const static uint8_t DEFCALL_RUNONLY = 1;       // call the callback function but don't delete the timer
+    const static uint8_t DEFCALL_RUNANDDEL = 2;      // call the callback function and delete the timer
 
     // find the first available slot
-    int findFirstFreeSlot();
+    int8_t findFirstFreeSlot();
 
     // value returned by the millis() function
     // in the previous run() call
-    unsigned long prev_millis[MAX_TIMERS];
+    volatile uint32_t prev_millis[MAX_TIMERS];
 
     // pointers to the callback functions
     timer_callback callbacks[MAX_TIMERS];
 
     // delay values
-    long delays[MAX_TIMERS];
+    uint32_t delays[MAX_TIMERS];
 
     // number of runs to be executed for each timer
-    int maxNumRuns[MAX_TIMERS];
+    uint8_t maxNumRuns[MAX_TIMERS];
 
     // number of executed runs for each timer
-    int numRuns[MAX_TIMERS];
+    uint8_t numRuns[MAX_TIMERS];
 
     // which timers are enabled
     boolean enabled[MAX_TIMERS];
 
     // deferred function call (sort of) - N.B.: this array is only used in run()
-    int toBeCalled[MAX_TIMERS];
+    uint8_t toBeCalled[MAX_TIMERS];
 
     // actual number of timers in use
-    int numTimers;
+    uint8_t numTimers;
 };
 
 #endif
